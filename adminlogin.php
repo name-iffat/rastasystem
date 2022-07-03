@@ -95,7 +95,7 @@ window.onunload = function () { null };
           </td>
           <td>
             <div align="left">
-              <input id="ps" type="password" name="ps"/>
+              <input id="ps" type="password" name="ps"  required/>
             </div>
           </td>
         </tr>
