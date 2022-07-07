@@ -1,18 +1,13 @@
 <?php
+    include('connection.php');
 
-    $username = "AYAMGUNTINGRASTA";
-    $password = "123";
-    $host = "localhost:1521/xe";
-
-    $dbconn = oci_connect($username,$password,$host);
-
-    if(!$dbconn) {
+    if(!$connection) {
         $e = oci_error();
         trigger_error(htmlentities($e['message'],ENT_QUOTES),
         E_USER_ERROR);
     } 
     else{
-        $stid = oci_parse($dbconn, 'SELECT * FROM EMPLOYEE');
+        $stid = oci_parse($connection, 'SELECT * FROM EMPLOYEE');
         oci_execute($stid);
 
         echo "<table border='1'>\n";
@@ -25,7 +20,7 @@
         }
         echo "</table>\n";
         echo 'Connected';
-        $stid = oci_parse($dbconn, 'SELECT * FROM MENU');
+        $stid = oci_parse($connection, 'SELECT * FROM MENU');
         oci_execute($stid);
 
         echo "<table border='1'>\n";
