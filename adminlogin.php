@@ -79,7 +79,6 @@ session_start();
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
                     <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
                     <li class="nav-item"><a class="nav-link" href="adminlogin.php">Login</a></li>
                 </ul>
@@ -94,7 +93,7 @@ session_start();
         <form name="f1" action="authentication.php" onsubmit="return validation()" method="POST">
             <table width="470" height="246" border="1" align="center">
                 <tr>
-                    <td align="center" colspan="2" style="font-size:38px;">Proceed as Admin</td>
+                    <td align="center" colspan="2" style="font-size:38px;">Please Call Our Waiter to Assist With Your Order</td>
 
                 </tr>
                 <tr>
