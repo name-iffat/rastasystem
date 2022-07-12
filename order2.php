@@ -6,26 +6,33 @@
       $notes=$_POST['notes'];
       $totalall=$_POST['totalall'];
       $quantityall=$_POST['quantityall'];
-      $sql= oci_parse($connection, "INSERT INTO ORDERS(ORDER_ID, ORDER_DATE,NOTES,TOTAL,EMPLOYEE_ID) VALUES  (sequence_test.NEXTVAL, CURRENT_DATE,'$notes','$totalall','$empid')");
+      $menus = new SplFixedArray(11);
+      $qmenus = new SplFixedArray(11);
+      $pmenus = new SplFixedArray(11);
+      $sql3 = oci_parse($connection, "SELECT * FROM ORDER");
+      oci_execute($sql3);
+      $ordercount = oci_fetch_array($sql3, OCI_ASSOC);
+      $count = oci_num_rows($result1);
+      $sql= oci_parse($connection, "INSERT INTO ORDERS(ORDER_ID, ORDER_DATE,NOTES,TOTAL,EMPLOYEE_ID) VALUES (sequence_test.NEXTVAL, CURRENT_DATE,'$notes','$totalall','$empid')");
+      /*$sql2 = oci_parse($connection, "INSERT INTO ORDER_DETAILS(ORDER_ID, QUANTITY, SUBTOTAL) VALUES  (sequence_test2.NEXTVAL, '$quantityall','$totalall')");
+      oci_execute($sql2); */
       $result=oci_execute($sql);
-
       for($x=0; $x < 12; $x++){
         $menus[$x] = $_POST['m'.($x + 1)];
         $qmenus[$x] = $_POST['q'.($x + 1)];
         $pmenus[$x] = $_POST['p'.($x + 1)];
         if($qmenus[$x] > 0){
-            $sql2 = oci_parse($connection, "INSERT INTO ORDER_DETAILS2(ORDER_ID,MENU_ID, QUANTITY, SUBTOTAL) VALUES  (sequence_test.CURRVAL,'$menus[$x]', '$qmenus[$x]','$pmenus[$x]')");
+            $sql2 = oci_parse($connection, "INSERT INTO ORDER_DETAILS(ORDER_ID,MENU_ID, QUANTITY, SUBTOTAL) VALUES  (sequence_test2.CURRVAL,'$menus[$x]', '$quantityall','$totalall')");
             oci_execute($sql2);
         }
       }
-
       if($result){
         echo "<script>alert('OrderSuccess!')</script>";
-        echo "<script>window.open('order.php','_self')</script>"; 
+        echo "<script>window.open('order.php','_self')</script>";
       }
       else{
         echo "<script>alert('Error!')</script>";
-        echo "<script>window.open('order.php','_self')</script>";
+        //echo "<script>window.open('order.php','_self')</script>";
       }
     }
 ?>
@@ -241,7 +248,7 @@ footer a{
                     <a href="index.php">Home</a>
                     <a href="index.php">Our Menu</a>
                     <a href="index.php">About Us</a>
-                    <a href="index.php">Contact Me</a>
+                    <a href="index.php">Contact Us</a>
                 </div>
             </nav>
         </div>
@@ -265,89 +272,113 @@ footer a{
                     <th>Price</th> 
                     </tr>
                     <tr>
-                    <td><input type="checkbox" id="menu1" value="9" onclick="calculatePrice()">Ayam Gunting</td>
-                    <input type="hidden" name="m1" value="1" id="cat1" />
+                    <td>
+                        <input type="hidden" value="1" name="m1" />
+                        <input type="checkbox" id="menu1" name="menu1" value="9" onclick="calculatePrice()">Ayam Gunting
+                    </td>
                     <td>Ala Carte</td>
                     <p id="demo"></p>
                     <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" class="qty" name="q1" id="q1"></td>
                     <td><input readonly value="0" name="p1" id="p1" /></td>
                     </tr>   
                     <tr>
-                    <td><input type="checkbox" id="menu2" name="menu2" value="13" onclick="calculatePrice()">Sotong Gorilla</td>
-                    <input type="hidden" name="m2" value="2" id="cat2" />
+                    <td>
+                        <input type="hidden" value="2" name="m2" />
+                        <input type="checkbox" id="menu2" name="menu2" value="13" onclick="calculatePrice()">Sotong Gorilla
+                    </td>
                     <td>Ala Carte</td>
                     <td><input  type="text" value="0" onChange="calculatePrice();calculateQty()" name="q2" id="q2"></td>  
                     <td><input readonly value="0" name="p2"  id="p2"></td>  
                     </tr> 
                     <tr>
-                    <td><input type="checkbox" id="menu3" name="menu3" value="4" onclick="calculatePrice()">Sosej Cheese</td>
-                    <input type="hidden" name="m3" value="3" id="cat2" />
+                    <td>
+                        <input type="hidden" value="3" name="m3" />
+                        <input type="checkbox" id="menu3" name="menu3" value="4" onclick="calculatePrice()">Sosej Cheese
+                    </td>
                     <td>Ala Carte</td>
                     <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q3" id="q3"></td>
-                    <td><input readonly value="0"" name="p3" id="p3"></td> 
+                    <td><input readonly value="0" name="p3" id="p3"></td> 
                     </tr> 
                     <tr>
-                    <td><input type="checkbox" id="menu4" name="menu4" value="1" onclick="calculatePrice()">Add-On Chezzy</td>
-                    <input type="hidden" name="m4" value="4" id="cat2" />
+                    <td>
+                        <input type="hidden" value="4" name="m4" />
+                        <input type="checkbox" id="menu4" name="menu4" value="1" onclick="calculatePrice()">Add-On Chezzy
+                    </td>
                     <td>Add-On</td>
                     <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q4" id="q4"></td>
                     <td><input readonly value="0" name="p4"  id="p4"></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu5" name="menu5" value="12" onclick="calculatePrice()">Ayam Gunting + Sosej Cheese</td>
-                        <input type="hidden" name="m5" value="5" id="cat2" />
+                        <td>
+                            <input type="hidden" value="5" name="m5" />
+                            <input type="checkbox" id="menu5" name="menu5" value="12" onclick="calculatePrice()">Ayam Gunting + Sosej Cheese
+                        </td>
                         <td>Combo Set</td>
                         <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q5" id="q5"></td>
-                        <td><input readonly value="0" name="p5" id="p5"></td> 
+                        <td><input readonly value="0" name="p5"  id="p5"></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu6" name="menu6" value="16" onclick="calculatePrice()">Sotong Gorilla + Sosej Cheese</td>
-                        <input type="hidden" name="m6" value="6" id="cat2" />
+                        <td>
+                            <input type="hidden" value="6" name="m6" />
+                            <input type="checkbox" id="menu6" name="menu6" value="16" onclick="calculatePrice()">Sotong Gorilla + Sosej Cheese
+                        </td>
                         <td>Combo Set</td>
                         <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q6" id="q6"></td>
                         <td><input readonly value="0" name="p6" id="p6"></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu7" name="menu7" value="7" onclick="calculatePrice()">Sosej Cheese (2 pcs)</td>
-                        <input type="hidden" name="m7" value="7" id="cat2" />
+                        <td>
+                            <input type="hidden" value="7" name="m7" />
+                            <input type="checkbox" id="menu7" name="menu7" value="7" onclick="calculatePrice()">Sosej Cheese (2 pcs)
+                        </td>
                         <td>Combo Set</td>
                         <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q7" id="q7"></td>
-                        <td><input readonly value="0" name="p7" id="p7"></td> 
+                        <td><input readonly value="0" name="p7"  id="p7"></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu8" name="menu8" value="10" onclick="calculatePrice()">Ayam Gunting + Air</td>
-                        <input type="hidden" name="m8" value="8" id="cat2" />
+                        <td>
+                            <input type="hidden" value="8" name="m8" />
+                            <input type="checkbox" id="menu8" name="menu8" value="10" onclick="calculatePrice()">Ayam Gunting + Air
+                        </td>
                         <td>Rasta Combo</td>
                         <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q8" id="q8"></td>
-                        <td><input readonly value="0" name="p8" id="p8"></td> 
+                        <td><input readonly value="0" name="p8"  id="p8"></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu9" name="menu9" value="14" onclick="calculatePrice()">Sotong Gorilla + Air</td>
-                        <input type="hidden" name="m9" value="9" id="cat2" />
+                        <td>
+                            <input type="hidden" value=9" name="m9" />
+                            <input type="checkbox" id="menu9" name="menu9" value="14" onclick="calculatePrice()">Sotong Gorilla + Air
+                        </td>
                         <td>Rasta Combo</td>
                         <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q9" id="q9"></td>
-                        <td><input readonly value="0" name="p9" id="p9"></td> 
+                        <td><input readonly value="0" name="p9"  id="p9"></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu10" name="menu10" value="5" onclick="calculatePrice()">Sosej Cheese + Air</td>
-                        <input type="hidden" name="m10" value="10" id="cat2" />
+                        <td>
+                            <input type="hidden" value="10" name="m10" />
+                            <input type="checkbox" id="menu10" name="menu10" value="5" onclick="calculatePrice()">Sosej Cheese + Air
+                        </td>
                         <td>Rasta Combo</td>
                         <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q10" id="q10"></td>
-                        <td><input readonly value="0" name="p10" id="p10"></td> 
+                        <td><input readonly value="0" name="p10"  id="p10"></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu11" name="menu11" value="2" onclick="calculatePrice()">Teh O Ais</td>
-                        <input type="hidden" name="m11" value="11" id="cat2" />
+                        <td>
+                            <input type="hidden" value="11" name="m11" />
+                            <input type="checkbox" id="menu11" name="menu11" value="2" onclick="calculatePrice()">Teh O Ais
+                        </td>
                         <td>Minuman</td>
                         <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q11" id="q11"></td>
-                        <td><input readonly value="0" name="p11" id="p11"></td> 
+                        <td><input readonly value="0" name="p11"  id="p11"></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu12" name="menu12" value="2" onclick="calculatePrice()">Sirap</td>
-                        <input type="hidden" name="m12" value="12" id="cat2" />
+                        <td>
+                            <input type="hidden" value="12" name="m12" />
+                            <input type="checkbox" id="menu12" name="menu12" value="2" onclick="calculatePrice()">Sirap
+                        </td>
                         <td>Minuman</td>
                         <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q12" id="q12"></td>
-                        <td><input readonly value="0" name="p12" id="p12"></td> 
+                        <td><input readonly value="0" name="p12"  id="p12"></td> 
                     </tr>
                     <tr>
                     <td></td> 
