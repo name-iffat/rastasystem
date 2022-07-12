@@ -7,8 +7,9 @@
       $totalall=$_POST['totalall'];
       $quantityall=$_POST['quantityall'];
       $sql= oci_parse($connection, "INSERT INTO ORDERS(ORDER_ID, ORDER_DATE,NOTES,TOTAL,EMPLOYEE_ID) VALUES  (sequence_test.NEXTVAL, CURRENT_DATE,'$notes','$totalall','$empid')");
+      $sql3= oci_parse($connection, "INSERT INTO PAYMENT(PAYMENT_ID, PAYMENT_DATE,ORDER_ID,PAYMENT_STATUS) VALUES  (sequence_test.CURRVAL, CURRENT_DATE,sequence_test.CURRVAL,'UNPAID')");
       $result=oci_execute($sql);
-
+      oci_execute($sql3);
       for($x=0; $x < 12; $x++){
         $menus[$x] = $_POST['m'.($x + 1)];
         $qmenus[$x] = $_POST['q'.($x + 1)];
