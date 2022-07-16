@@ -15,7 +15,7 @@
         $qmenus[$x] = $_POST['q'.($x + 1)];
         $pmenus[$x] = $_POST['p'.($x + 1)];
         if($qmenus[$x] > 0){
-            $sql2 = oci_parse($connection, "INSERT INTO ORDER_DETAILS2(ORDER_ID,MENU_ID, QUANTITY, SUBTOTAL) VALUES  (sequence_test.CURRVAL,'$menus[$x]', '$qmenus[$x]','$pmenus[$x]')");
+            $sql2 = oci_parse($connection, "INSERT INTO ORDER_DETAILS(ORDER_ID,MENU_ID, QUANTITY, SUBTOTAL) VALUES  (sequence_test.CURRVAL,'$menus[$x]', '$qmenus[$x]','$pmenus[$x]')");
             oci_execute($sql2);
         }
       }
