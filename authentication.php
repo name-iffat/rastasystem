@@ -38,9 +38,8 @@ session_start();
             $_SESSION['phone']=$row['PHONE'];
             $_SESSION['hiredate']=$row['HIRE_DATE'];
             $_SESSION['position']=$row['POSITION'];
-            $_SESSION['supervisorid']=$row['SUPERVISOR_ID'];
 		
-			if($_SESSION['EMPLOYEE_ID'] >= 100){  
+			if($_SESSION['empid'] >= 100){  
 			 		
             echo "<script language='javascript' type='text/javascript'> location.href='adminhome.php' </script>";  
 			}  
@@ -52,4 +51,4 @@ session_start();
             echo '<script >alert("invalid username or password")</script>';  
 			echo "<script language='javascript' type='text/javascript'> location.href='adminlogin.php' </script>";
         }  		
-?>  
+?> 
