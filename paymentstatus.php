@@ -1,4 +1,5 @@
 <?php
+session_start();
 include('connection.php');
 ?>
 <html>
@@ -89,7 +90,8 @@ include('connection.php');
         oci_execute($updatepayment);
         if($updatepayment)
         {
-            echo "<script>window.open('paymentstatus.php','_self')</script>";
+            $_SESSION['payorderid'] = $id;
+            echo "<script>window.open('receiptPaid.php','_self')</script>";
         }
         else
         {
