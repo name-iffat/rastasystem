@@ -59,6 +59,9 @@ session_start();
     <a href="employeelist.php">
         <button>List of Employees</button>
     </a>
+    <a href="paymentstatus.php">
+        <button>Payment Status</button>
+    </a>
     <a href="orderlist.php">
         <button>List of Orders</button>
     </a>
