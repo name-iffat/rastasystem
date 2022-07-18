@@ -1,35 +1,45 @@
 <?php
-include('connection.php');
-session_start();
+    include('connection.php');
+    session_start();
 
-if (isset($_POST['submit'])) {
-    $empid = $_SESSION['empid'];
-    $notes = $_POST['notes'];
-    $totalall = $_POST['totalall'];
-    $quantityall = $_POST['quantityall'];
-    $sql = oci_parse($connection, "INSERT INTO ORDERS(ORDER_ID, ORDER_DATE,NOTES,TOTAL,EMPLOYEE_ID) VALUES  (sequence_test.NEXTVAL, CURRENT_DATE,'$notes','$totalall','$empid')");
-    $sql3 = oci_parse($connection, "INSERT INTO PAYMENT(PAYMENT_ID, PAYMENT_DATE,ORDER_ID,PAYMENT_STATUS) VALUES  (sequence_test.CURRVAL, CURRENT_DATE,sequence_test.CURRVAL,'UNPAID')");
-    $result = oci_execute($sql);
-    oci_execute($sql3);
+    if (isset($_POST['submit'])) 
+    {
+      $empid=$_SESSION['empid'];
+      $notes=$_POST['notes'];
+      $totalall=$_POST['totalall'];
+      $quantityall=$_POST['quantityall'];
+      $sql= oci_parse($connection, "INSERT INTO ORDERS(ORDER_ID, ORDER_DATE,NOTES,TOTAL,EMPLOYEE_ID) VALUES  (sequence_test.NEXTVAL, CURRENT_DATE,'$notes','$totalall','$empid')");
+      $sql3= oci_parse($connection, "INSERT INTO PAYMENT(PAYMENT_ID, PAYMENT_DATE,ORDER_ID,PAYMENT_STATUS) VALUES  (sequence_test.CURRVAL, CURRENT_DATE,sequence_test.CURRVAL,'UNPAID')");
+      $result=oci_execute($sql);
+      oci_execute($sql3);
 
-    for ($x = 0; $x < 12; $x++) {
-        $menus[$x] = $_POST['m' . ($x + 1)];
-        $qmenus[$x] = $_POST['q' . ($x + 1)];
-        $pmenus[$x] = $_POST['p' . ($x + 1)];
-        if ($qmenus[$x] > 0) {
+      for($x=0; $x < 12; $x++){
+        $menus[$x] = $_POST['m'.($x + 1)];
+        $qmenus[$x] = $_POST['q'.($x + 1)];
+        $pmenus[$x] = $_POST['p'.($x + 1)];
+        if($qmenus[$x] > 0){
             $sql2 = oci_parse($connection, "INSERT INTO ORDER_DETAILS(ORDER_ID,MENU_ID, QUANTITY, SUBTOTAL) VALUES  (sequence_test.CURRVAL,'$menus[$x]', '$qmenus[$x]','$pmenus[$x]')");
             oci_execute($sql2);
         }
-    }
+      }
 
-    if ($result) {
+      //coding to pass current order id to receipt generate receipt page
+      $sql4 = oci_parse($connection,"SELECT MAX(ORDER_ID) FROM ORDERS");
+      oci_execute($sql4);
+      while($row = oci_fetch_array($sql4)){
+        $_SESSION['orderId'] = $row['MAX(ORDER_ID)'];
+      }
+
+      if($result){
         echo "<script>alert('OrderSuccess!')</script>";
-        echo "<script>window.open('order.php','_self')</script>";
-    } else {
+        //header("Location: receipt.php?orderId=<?php echo ");
+        echo "<script>window.open('receipt.php','_self')</script>";
+      }
+      else{
         echo "<script>alert('Error!')</script>";
         echo "<script>window.open('order.php','_self')</script>";
+      }
     }
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,7 +53,8 @@ if (isset($_POST['submit'])) {
   </head>
   <body>
     <main>
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <container>
+      <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand"><img class="img-fluid" src="./images/Logo2.png"></a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,28 +67,28 @@ if (isset($_POST['submit'])) {
                         <li class="nav-item"><a class="nav-link" href="./index.php #about">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="./menu.php">Menu</a></li>
                         <li class="nav-item"><a class="nav-link" href="./order.php">Order</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
                         <li class="nav-item"><a class="nav-link" href="./adminlogin.php">Login</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="masthead1">
+        <container>
             <div class="table-bg container mt-5 rounded-3">
-            <input type="button" class="button" onclick="location.href='adminhome.php';" value="Back">
-                <form action="order.php" method="POST" name="tblform">
+            <input type="button" class="button mt-3" onclick="location.href='adminhome.php';" value="Back">
+                <form action="order.php" method="POST" name="tblform" >
                     <table width="80%"  class="table" >
                     <tr>
-                        <th>Employee ID:</th>
-                        <th>
-                            <?php echo $_SESSION['empid']; ?>
-                            <!-- <select id="empid" name="empid">
+                    <th>Employee ID:</th>
+                    <th>
+                        <?php echo $_SESSION['empid']; ?>
+                    <!--<th><select id="empid" name="empid">
                             <option value="101">101</option>
                             <option value="102">102</option>
                             <option value="103">103</option>
                             <option value="104">104</option>
-                            </select> -->
-                        </th>
+                        </select></th> -->
+                    </th>
                     </tr>
                     <tr>
                     <th>Menu</th>
@@ -87,102 +98,112 @@ if (isset($_POST['submit'])) {
                     </tr>
                     <tr>
                     <td><input class="form-check-input" type="checkbox" id="menu1" value="9" onclick="calculatePrice()">Ayam Gunting</td>
-                    <input type="hidden" value="cat1" id="cat1" />
+                    <input type="hidden" name="m1" value="1" id="cat1" />
                     <td>Ala Carte</td>
                     <p id="demo"></p>
-                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" class="qty" id="q1"></td>
-                    <td><input readonly value="0" id="p1" disabled/></td>
+                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" class="qty" name="q1" id="q1"></td>
+                    <td><input readonly value="0" name="p1" id="p1" /></td>
                     </tr>   
                     <tr>
                     <td><input class="form-check-input" type="checkbox" id="menu2" name="menu2" value="13" onclick="calculatePrice()">Sotong Gorilla</td>
+                    <input type="hidden" name="m2" value="2" id="cat2" />
                     <td>Ala Carte</td>
-                    <td><input  type="text" value="0" onChange="calculatePrice();calculateQty()" id="q2"></td>  
-                    <td><input readonly value="0"  id="p2" disabled></td>  
+                    <td><input  type="text" value="0" onChange="calculatePrice();calculateQty()" name="q2" id="q2"></td>  
+                    <td><input readonly value="0" name="p2"  id="p2"></td>  
                     </tr> 
                     <tr>
                     <td><input class="form-check-input" type="checkbox" id="menu3" name="menu3" value="4" onclick="calculatePrice()">Sosej Cheese</td>
+                    <input type="hidden" name="m3" value="3" id="cat2" />
                     <td>Ala Carte</td>
-                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q3"></td>
-                    <td><input readonly value="0"" id="p3" disabled></td> 
+                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q3" id="q3"></td>
+                    <td><input readonly value="0"" name="p3" id="p3"></td> 
                     </tr> 
                     <tr>
                     <td><input class="form-check-input" type="checkbox" id="menu4" name="menu4" value="1" onclick="calculatePrice()">Add-On Chezzy</td>
+                    <input type="hidden" name="m4" value="4" id="cat2" />
                     <td>Add-On</td>
-                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q4"></td>
-                    <td><input readonly value="0"  id="p4" disabled></td> 
+                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q4" id="q4"></td>
+                    <td><input readonly value="0" name="p4"  id="p4"></td> 
                     </tr>
                     <tr>
-                        <td style="width:25%"><input class="form-check-input" type="checkbox" id="menu5" name="menu5" value="12" onclick="calculatePrice()">Ayam Gunting + Sosej Cheese</td>
+                        <td><input class="form-check-input" type="checkbox" id="menu5" name="menu5" value="12" onclick="calculatePrice()">Ayam Gunting + Sosej Cheese</td>
+                        <input type="hidden" name="m5" value="5" id="cat2" />
                         <td>Combo Set</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q5"></td>
-                        <td><input readonly value="0"  id="p5" disabled></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q5" id="q5"></td>
+                        <td><input readonly value="0" name="p5" id="p5"></td> 
                     </tr>
                     <tr>
                         <td><input class="form-check-input" type="checkbox" id="menu6" name="menu6" value="16" onclick="calculatePrice()">Sotong Gorilla + Sosej Cheese</td>
+                        <input type="hidden" name="m6" value="6" id="cat2" />
                         <td>Combo Set</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q6"></td>
-                        <td><input readonly value="0" id="p6" disabled></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q6" id="q6"></td>
+                        <td><input readonly value="0" name="p6" id="p6"></td> 
                     </tr>
                     <tr>
                         <td><input class="form-check-input" type="checkbox" id="menu7" name="menu7" value="7" onclick="calculatePrice()">Sosej Cheese (2 pcs)</td>
+                        <input type="hidden" name="m7" value="7" id="cat2" />
                         <td>Combo Set</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q7"></td>
-                        <td><input readonly value="0"  id="p7" disabled></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q7" id="q7"></td>
+                        <td><input readonly value="0" name="p7" id="p7"></td> 
                     </tr>
                     <tr>
                         <td><input class="form-check-input" type="checkbox" id="menu8" name="menu8" value="10" onclick="calculatePrice()">Ayam Gunting + Air</td>
+                        <input type="hidden" name="m8" value="8" id="cat2" />
                         <td>Rasta Combo</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q8"></td>
-                        <td><input readonly value="0"  id="p8" disabled></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q8" id="q8"></td>
+                        <td><input readonly value="0" name="p8" id="p8"></td> 
                     </tr>
                     <tr>
                         <td><input class="form-check-input" type="checkbox" id="menu9" name="menu9" value="14" onclick="calculatePrice()">Sotong Gorilla + Air</td>
+                        <input type="hidden" name="m9" value="9" id="cat2" />
                         <td>Rasta Combo</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q9"></td>
-                        <td><input readonly value="0"  id="p9" disabled></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q9" id="q9"></td>
+                        <td><input readonly value="0" name="p9" id="p9"></td> 
                     </tr>
                     <tr>
                         <td><input class="form-check-input" type="checkbox" id="menu10" name="menu10" value="5" onclick="calculatePrice()">Sosej Cheese + Air</td>
+                        <input type="hidden" name="m10" value="10" id="cat2" />
                         <td>Rasta Combo</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q10"></td>
-                        <td><input readonly value="0"  id="p10" disabled></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q10" id="q10"></td>
+                        <td><input readonly value="0" name="p10" id="p10"></td> 
                     </tr>
                     <tr>
                         <td><input class="form-check-input" type="checkbox" id="menu11" name="menu11" value="2" onclick="calculatePrice()">Teh O Ais</td>
+                        <input type="hidden" name="m11" value="11" id="cat2" />
                         <td>Minuman</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q11"></td>
-                        <td><input readonly value="0"  id="p11" disabled></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q11" id="q11"></td>
+                        <td><input readonly value="0" name="p11" id="p11"></td> 
                     </tr>
                     <tr>
                         <td><input class="form-check-input" type="checkbox" id="menu12" name="menu12" value="2" onclick="calculatePrice()">Sirap</td>
+                        <input type="hidden" name="m12" value="12" id="cat2" />
                         <td>Minuman</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q12"></td>
-                        <td><input readonly value="0"  id="p12" disabled></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q12" id="q12"></td>
+                        <td><input readonly value="0" name="p12" id="p12"></td> 
                     </tr>
                     <tr>
                     <td></td> 
                     <td>Total</td>
-                    <td><input type="number" name="quantityall" readonly value="0" id="qtyAll" disabled/></td>
-                    <td><input type="number" name="totalall" readonly value="0" id="totAll" disabled/></td>
+                    <td><input type="number" name="quantityall" readonly value="0" id="qtyAll"/></td>
+                    <td><input type="number" name="totalall" readonly value="0" id="totAll"/></td>
                     </table>
-                    <div class="container text-center">
-                            <h1>Notes</h1>
-                        </div>
-                        <div class="container note-box">
-                            <!--Dont put anything or take closing for textarea to new line-->
-                            <textarea name="notes" id="notes" class="form-control" rows="3"></textarea>
-                        </div text>
-                        <br>
-                    <div class="container text-center">
+                    <div class="text-center"><h1>Notes</h1></div>
+                    <div class ="notesbox">
+                    <textarea name="notes" class="form-control text-center" id="notes"></textarea>
+                    </div text>
+                    <br>
+                    <div class="buttonContainer text-center">
                         <input type="reset" class="button" id="buttonClear" value="Clear">
-                        <input type="submit" class="button" id="buttonSubmit" value="Submit Order" onclick=createBill()>
+                        <input type="submit" name="submit" class="button" id="buttonSubmit" value="Submit Order" onclick=createBill()>
                     </div>
                     </form>
             </div>
+        </div>
+        
       </container>
     </main>
       <script>
-        function calculateQty(tblform) {
+        function calculateQty(tblform){
             var q1 = parseInt(document.getElementById("q1").value);
             var q2 = parseInt(document.getElementById("q2").value);
             var q3 = parseInt(document.getElementById("q3").value);
@@ -196,10 +217,9 @@ if (isset($_POST['submit'])) {
             var q11 = parseInt(document.getElementById("q11").value);
             var q12 = parseInt(document.getElementById("q12").value);
             var qtyall = 0;
-            qtyall = q1 + q2 + q3 + q4 + q5 + q6 + q7 + q8 + q9 + q10 + q11 + q12;
-            document.getElementById("qtyAll").value = qtyall;
+            qtyall = q1+q2+q3+q4+q5+q6+q7+q8+q9+q10+q11+q12;
+            document.getElementById("qtyAll").value=qtyall;
         }
-
         function calculatePrice(tblform){ 
             var m1 = document.getElementById("menu1");
             var m2 = document.getElementById("menu2");

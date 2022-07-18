@@ -42,7 +42,6 @@ session_start();
                         <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
                         <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
                         <li class="nav-item"><a class="nav-link" href="adminlogin.php" onClick="return logout()">Logout</a>
                         </li>
                     </ul>
@@ -54,34 +53,34 @@ session_start();
                 <h1> Welcome, <?php echo $_SESSION['lname']; ?> !</h1>
             </div>
             <a href="paymentstatus.php">
-                <button class="btn-1">Payment Status</button>
+                <button class="btn-1 mb-2">Payment Status</button>
             </a>
             <a href="order.php">
-                <button class="btn-1">Order Now</button>
+                <button class="btn-1 mb-2">Order Now</button>
             </a>
             <a href="registrationform.php">
-                <button class="btn-1">Employee Registration</button>
+                <button class="btn-1 mb-2">Employee Registration</button>
             </a>
             <a href="employeelist.php">
-                <button class="btn-1">List of Employees</button>
+                <button class="btn-1 mb-2">List of Employees</button>
             </a>
             <a href="orderlist.php">
-                <button class="btn-1">List of Orders</button>
+                <button class="btn-1 mb-2">List of Orders</button>
             </a>
             <a href="orderdetailslist.php">
-                <button class="btn-1">List of Order Details</button>
+                <button class="btn-1 mb-2">List of Order Details</button>
             </a>
             <a href="salesinmay.php">
-                <button class="btn-1">Sales in the month of May</button>
+                <button class="btn-1 mb-2">Sales in the month of May</button>
             </a>
             <a href="salesinjune.php">
-                <button class="btn-1">Sales in the month of June</button>
+                <button class="btn-1 mb-2">Sales in the month of June</button>
             </a>
             <a href="salesinjuly.php">
-                <button class="btn-1">Sales in the month of July</button>
+                <button class="btn-1 mb-2">Sales in the month of July</button>
             </a>
             <a href="salesin2022.php">
-                <button class="btn-1">Sales in the year of 2022</button>
+                <button class="btn-1 mb-2">Sales in the year of 2022</button>
             </a>
         </div>
         

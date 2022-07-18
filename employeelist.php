@@ -23,7 +23,6 @@ include('connection.php');
                                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                                 <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
                                 <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link" href="adminlogin.php" onClick="return logout()">Logout</a>
                                 </li>
                             </ul>
@@ -35,7 +34,7 @@ include('connection.php');
             return confirm("Do you want to delete data?\nclick OK to proceed");
         }
     </script>
-    <div class="container table-bg align-items-center rounded-4">
+    <div class="table-bg d-flex flex-column align-items-center rounded-4">
     <input type="button" class="button" onclick="location.href='adminhome.php';" value="Back">
 <br>
     <?php
@@ -77,7 +76,7 @@ include('connection.php');
         echo "<td>" . $row['HIRE_DATE'] . "</td>";
         echo "<td>" . $row['POSITION'] . "</td>";
         echo "<td>" . $row['SUPERVISOR_ID'] . "</td>";
-        echo "<td width='10%' align='center'><a class='one' onclick='return del()' href='delete_employee.php?EMPLOYEE_ID=" . $row['EMPLOYEE_ID'] . "'>Delete</a></td>";
+        echo "<td width='10%' align='center'><a class='one' onclick='return del()' href='delete_employee.php?EMPLOYEE_ID=" . $row['EMPLOYEE_ID'] . "'><button class='button'>Delete</button></a></td>";
 
         echo "</tr>";
     }
