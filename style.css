@@ -281,6 +281,9 @@ border: 1px solid #6a040f;
 }
 
 .table-bg1 {
+
+  margin-top: 50px;
+
   background-color: white;
   background-image: none;
   border: 1px solid rgba(0, 0, 0, 0.3);
@@ -291,6 +294,21 @@ border: 1px solid #6a040f;
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
   width: 50%;
 }
+
+
+.table-bg2 {
+  background-color: white;
+  background-image: none;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 1px;
+  color: inherit;
+  display: block;
+  padding: 6px 12px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  width: 100%;
+  margin-top: 160px;
+}
+
 
 .masthead1 {
     position: relative;
@@ -499,4 +517,57 @@ border: 1px solid #6a040f;
 
 .btn-1:focus-visible {
   box-shadow: none;
+}
+
+
+/* -------------------------------------
+    INVOICE
+    Styles for the billing table
+------------------------------------- */
+.invoice {
+  margin: 40px auto;
+  text-align: left;
+  width: 80%;
+}
+.invoice td {
+  padding: 5px 0;
+}
+.invoice .invoice-items {
+  width: 100%;
+}
+.invoice .invoice-items td {
+  border-top: #eee 1px solid;
+}
+.invoice .invoice-items .total td {
+  border-top: 2px solid #333;
+  border-bottom: 2px solid #333;
+  font-weight: 700;
+}
+
+/* -------------------------------------
+    ALERTS
+    Change the class depending on warning email, good email or bad email
+------------------------------------- */
+.alert {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 500;
+  padding: 20px;
+  text-align: center;
+  border-radius: 3px 3px 0 0;
+}
+.alert a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+}
+.alert.alert-warning {
+  background: #f8ac59;
+}
+.alert.alert-bad {
+  background: #ed5565;
+}
+.alert.alert-good {
+  background: #1ab394;
 }

@@ -20,8 +20,9 @@
                     <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="./menu.php">Menu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="./order.php">Order</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
+
+                    <li class="nav-item"><a class="nav-link" href="./adminlogin.php">Order</a></li>
+
                     <li class="nav-item"><a class="nav-link" href="./adminlogin.php">Login</a></li>
                 </ul>
             </div>
@@ -34,7 +35,9 @@
                 <div class="text-center">
                     <h1 class="mx-auto my-0"><img src="images/Logo.png"></h1>
                     <h2 class="mx-auto mt-2 mb-5">Rangup Sedap Menyengat</h2>
-                    <a class="btn btn-primary" href="#">Order Now</a>
+
+                    <a class="btn btn-primary" href="./adminlogin.php">Order Now</a>
+
                 </div>
             </div>
         </div>
