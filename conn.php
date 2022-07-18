@@ -1,12 +1,17 @@
 <?php
+
     $username = "AYAMGUNTINGRASTA";
-    $password = "123";
+    $password = "system";
     $host = "localhost:1521/xe";
 
-    $connection = oci_connect($username,$password,$host);
-    if(!$connection) {
+    $dbconn = oci_connect($username,$password,$host);
+
+    if(!$dbconn) {
         $e = oci_error();
         trigger_error(htmlentities($e['message'],ENT_QUOTES),
         E_USER_ERROR);
     } 
+    else{
+        
+    }
 ?>

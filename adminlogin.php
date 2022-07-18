@@ -11,12 +11,9 @@ session_start();
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Courier+Prime">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Concert+One">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link href="./style1.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
-    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="./style.css" rel="stylesheet">
+
     <script type="text/javascript">
     function preventBack() {
         window.history.forward();
@@ -67,84 +64,42 @@ session_start();
 <body>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="index.php"><img class="img-fluid" src="./images/Logo2.png"></a>
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <a class="navbar-brand"><img class="img-fluid" src="./images/Logo2.png"></a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./index.php #about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./menu.php">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./order.php">Order</a></li>
                     <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="adminlogin.php">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./adminlogin.php">Login</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <p align="center">&nbsp;</p>
-    <table width="455" border="0" align="center">
-        <br><br><br><br>
-    </table>
-    <div class="tb">
-        <form name="f1" action="authentication.php" onsubmit="return validation()" method="POST">
-            <table width="470" height="246" border="1" align="center">
-                <tr>
-                    <td align="center" colspan="2" style="font-size:38px;">Please Call Our Waiter to Assist With Your Order</td>
-
-                </tr>
-                <tr>
-                <tr border="0">
-                </tr>
-                <table width="292" height="77" border="0" align="center">
-                    <tr>
-                        <td width="80">
-                            <div align="left" style="font-size:25px;">EmployeeID</div>
-                        </td>
-                        <td width="22">
-                            <div align="left">:</div>
-                        </td>
-                        <td width="176">
-                            <div align="left">
-                                <input id="empid" type="text" name="empid" required a />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <p align="center" style="font-size:25px;">Log In </p>
-                    </tr>
-                </table>
-                <table width="294" border="0" align="center">
-                    <tr>
-                        <td>
-                            <div align="right">
-                                <input type="checkbox" onclick="myFunction()">Show Password
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <table width="223" border="0" align="center">
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td align="center">
-                            <input class="button-1" name="submit" type="submit" value="LOGIN" />
-                        </td>
-                    </tr>
-                    <table width="294" border="0" align="center">
-                        <tr><br><br><br>
-                    </table>
-                </table>
-                <p>&nbsp;</p>
-                </th>
-                </tr>
-
-            </table>
-
-        </form>
+    <div class="masthead1">
+        <div class="login-container text-center animated flipInX">
+            <div>
+                <h1 class="logo-badge text-black"><img class="img-fluid" src="./images/Logo2.png"></h1>
+            </div>
+                <p class="text-black">Please Call Our Waiter to Assist With Your Order</p>
+            <div class="container-content rounded-5">
+                <form class="margin-t" name="f1" action="authentication.php" onsubmit="return validation()" method="POST">
+                    <div class="form-group">
+                        <input type="text" class="form-control rounded-top" placeholder="Employee ID" id="empid" name="empid" required a \>
+                    </div>
+                    <br>
+                    <input class="btn text-white button-1" name="submit" type="submit" value="LOGIN" />
+                </form>
+                <p class="margin-t text-black"><small> Ayam Gunting Rasta &copy; 2022</small> </p>
+            </div>
+        </div>
+    </div>
+    
         <script>
         function validation() {
             var id = document.f1.user.value;
@@ -173,8 +128,8 @@ session_start();
             }
         }
         </script>
-    </div>
-    <br><br><br><br><br><br><br><br><br><br>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

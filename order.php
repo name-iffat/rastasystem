@@ -1,45 +1,35 @@
 <?php
-    include('connection.php');
-    session_start();
+include('connection.php');
+session_start();
 
-    if (isset($_POST['submit'])) 
-    {
-      $empid=$_SESSION['empid'];
-      $notes=$_POST['notes'];
-      $totalall=$_POST['totalall'];
-      $quantityall=$_POST['quantityall'];
-      $sql= oci_parse($connection, "INSERT INTO ORDERS(ORDER_ID, ORDER_DATE,NOTES,TOTAL,EMPLOYEE_ID) VALUES  (sequence_test.NEXTVAL, CURRENT_DATE,'$notes','$totalall','$empid')");
-      $sql3= oci_parse($connection, "INSERT INTO PAYMENT(PAYMENT_ID, PAYMENT_DATE,ORDER_ID,PAYMENT_STATUS) VALUES  (sequence_test.CURRVAL, CURRENT_DATE,sequence_test.CURRVAL,'UNPAID')");
-      $result=oci_execute($sql);
-      oci_execute($sql3);
+if (isset($_POST['submit'])) {
+    $empid = $_SESSION['empid'];
+    $notes = $_POST['notes'];
+    $totalall = $_POST['totalall'];
+    $quantityall = $_POST['quantityall'];
+    $sql = oci_parse($connection, "INSERT INTO ORDERS(ORDER_ID, ORDER_DATE,NOTES,TOTAL,EMPLOYEE_ID) VALUES  (sequence_test.NEXTVAL, CURRENT_DATE,'$notes','$totalall','$empid')");
+    $sql3 = oci_parse($connection, "INSERT INTO PAYMENT(PAYMENT_ID, PAYMENT_DATE,ORDER_ID,PAYMENT_STATUS) VALUES  (sequence_test.CURRVAL, CURRENT_DATE,sequence_test.CURRVAL,'UNPAID')");
+    $result = oci_execute($sql);
+    oci_execute($sql3);
 
-      for($x=0; $x < 12; $x++){
-        $menus[$x] = $_POST['m'.($x + 1)];
-        $qmenus[$x] = $_POST['q'.($x + 1)];
-        $pmenus[$x] = $_POST['p'.($x + 1)];
-        if($qmenus[$x] > 0){
+    for ($x = 0; $x < 12; $x++) {
+        $menus[$x] = $_POST['m' . ($x + 1)];
+        $qmenus[$x] = $_POST['q' . ($x + 1)];
+        $pmenus[$x] = $_POST['p' . ($x + 1)];
+        if ($qmenus[$x] > 0) {
             $sql2 = oci_parse($connection, "INSERT INTO ORDER_DETAILS(ORDER_ID,MENU_ID, QUANTITY, SUBTOTAL) VALUES  (sequence_test.CURRVAL,'$menus[$x]', '$qmenus[$x]','$pmenus[$x]')");
             oci_execute($sql2);
         }
-      }
+    }
 
-      //coding to pass current order id to receipt generate receipt page
-      $sql4 = oci_parse($connection,"SELECT MAX(ORDER_ID) FROM ORDERS");
-      oci_execute($sql4);
-      while($row = oci_fetch_array($sql4)){
-        $_SESSION['orderId'] = $row['MAX(ORDER_ID)'];
-      }
-
-      if($result){
+    if ($result) {
         echo "<script>alert('OrderSuccess!')</script>";
-        //header("Location: receipt.php?orderId=<?php echo ");
-        echo "<script>window.open('receipt.php','_self')</script>";
-      }
-      else{
+        echo "<script>window.open('order.php','_self')</script>";
+    } else {
         echo "<script>alert('Error!')</script>";
         echo "<script>window.open('order.php','_self')</script>";
-      }
     }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,231 +38,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>AYAM RASTA WEB PAGE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap');
-    html{
-    font-family: "Anton", sans-serif;
-    font-size: 12px;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-    color: #ff0000e7;         /* Text Color for about us description */
-    background: rgb(169, 209, 99); /* whole page background */
-    }
-    a{
-    color: rgb(101, 255, 255);
-    text-decoration: none;
-
-    /* color for footer section */
-    }
-    a:hover{
-    color: rgba(14, 18, 249, 0.89);
-    /* color for footer section when mouse interact */
-    }
-
-p{
-    font-size: 1.4rem;
-}
-
-img{
-    width: 100%;
-    max-width: 100%;
-}
-
-.topnav{
-    background-color: rgb(208, 255, 0);
-    overflow: hidden;
-}
-
-.topnav a{
-    float: left;
-    color: #ff0000;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-}
-
-.topnav a:hover{
-    background-color: rgb(255, 0, 0);
-    color: rgb(238, 255, 0);
-}
-
-.container{
-    width: 100%;
-    max-width: 90rem;
-    margin: 0 auto;
-}
-
-nav{
-    width: 110%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 2px solid rgba(226, 175, 175, 0.2);
-}
-
-.nav-pic{
-    width: 7rem;
-}
-
-.nav-pic a img{
-    border-radius: 50%;
-}
-
-h2{
-    text-align: center;
-    color: #2f3542;
-    font-size: 2rem;
-    margin-bottom: 2%;
-}
-
-.tab {
-    overflow: hidden;
-  }
-  
-  /* Style the menu buttons inside the tab */
-  .tab button {
-    background-color:#00ff08;
-    float: center;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-  }
-  
-  /* Change background color of  buttons on hover */
-  .tab button:hover {
-    background-color: rgb(255, 0, 0);
-  }
-  
-  /* Create an active/current tablink class */
-  .tab button.active {
-    background-color: rgb(255, 0, 0);
-  }
-  
-  /* Style the tab content */
-  .tabcontent {
-    display: none;
-    border-top: none;
-  }
-table{
-    width: 90%;
-    height: 90%;
-    font-family: "Yanone Kaffeesatz", sans-serif;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
-
-th{
-    background-color: rgb(12, 73, 55);
-    font-weight: bold;
-    font-size: 2.5rem;
-    border: 1px solid rgb(18, 4, 68);
-    border-radius: 2rem;
-}
-
-td{
-    background-color: rgb(12, 50, 82);
-    font-size: 2rem;
-    border: 1px solid rgb(18, 4, 68);
-    border-radius: 2rem;
-}
-
-.buttonContainer{
-    text-align: center;
-}
-
-.button{
-    display: inline-block;
-    padding: 15px 25px;
-    font-size: 15px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color: #fff;
-    background-color: #51ff00;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px rgb(255, 238, 0);
-  }
-
-.button:hover {background-color: #3e8e41}
-
-.button:active {
-  background-color: #00ff08;
-  box-shadow: 0 5px rgb(255, 0, 0);
-  transform: translateY(4px);
-}
-
-footer{
-    width: 100%;
-    max-width: 70rem;
-    margin: auto;
-    padding: 2.5rem;
-    color: #8a8a8a;
-    text-align: center;
-    font-size: 1.2rem;
-    display: flex;
-    justify-content: space-evenly;
-    flex-direction: column;
-}
-
-footer a{
-    color: rgba(3, 155, 155);
-    margin: 0 0.2rem;
-}
-
-.td{
-    width:20%
-}
-.notesbox {
-  text-align: center;
-  border-style: solid black 5px;
-}
-.center {
-  text-align: center;
-}
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="./style.css" rel="stylesheet">
   </head>
   <body>
     <main>
-      <container>
-        <div class="container">
-          <nav>
-              <div class="nav-pic">
-                  <a href="index.php">
-                      <img src="images/topleftpic.png" alt="" />
-                    </a>
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand"><img class="img-fluid" src="./images/Logo2.png"></a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="./index.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="./index.php #about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="./menu.php">Menu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="./order.php">Order</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="./adminlogin.php">Login</a></li>
+                    </ul>
                 </div>
-                <div class="topnav">
-                    <a href="index.php">Home</a>
-                    <a href="index.php">Our Menu</a>
-                    <a href="index.php">About Us</a>
-                    <a href="index.php">Contact Us</a>
-                </div>
-            </nav>
-        </div>
-        <input type="button" onclick="location.href='adminhome.php';" value="Back">
-        <container>
-            <div>
-                <form action="order.php" method="POST" name="tblform" >
+            </div>
+        </nav>
+        <div class="masthead1">
+            <div class="table-bg container mt-5 rounded-3">
+            <input type="button" class="button" onclick="location.href='adminhome.php';" value="Back">
+                <form action="order.php" method="POST" name="tblform">
                     <table width="80%"  class="table" >
                     <tr>
-                    <th>Employee ID:</th>
-                    <th>
-                        <?php echo $_SESSION['empid']; ?>
-                    <!--<th><select id="empid" name="empid">
+                        <th>Employee ID:</th>
+                        <th>
+                            <?php echo $_SESSION['empid']; ?>
+                            <!-- <select id="empid" name="empid">
                             <option value="101">101</option>
                             <option value="102">102</option>
                             <option value="103">103</option>
                             <option value="104">104</option>
-                        </select></th> -->
-                    </th>
+                            </select> -->
+                        </th>
                     </tr>
                     <tr>
                     <th>Menu</th>
@@ -281,131 +86,103 @@ footer a{
                     <th>Price</th> 
                     </tr>
                     <tr>
-                    <td><input type="checkbox" id="menu1" value="9" onclick="calculatePrice()">Ayam Gunting</td>
-                    <input type="hidden" name="m1" value="1" id="cat1" />
+                    <td><input class="form-check-input" type="checkbox" id="menu1" value="9" onclick="calculatePrice()">Ayam Gunting</td>
+                    <input type="hidden" value="cat1" id="cat1" />
                     <td>Ala Carte</td>
                     <p id="demo"></p>
-                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" class="qty" name="q1" id="q1"></td>
-                    <td><input readonly value="0" name="p1" id="p1" /></td>
+                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" class="qty" id="q1"></td>
+                    <td><input readonly value="0" id="p1" disabled/></td>
                     </tr>   
                     <tr>
-                    <td><input type="checkbox" id="menu2" name="menu2" value="13" onclick="calculatePrice()">Sotong Gorilla</td>
-                    <input type="hidden" name="m2" value="2" id="cat2" />
+                    <td><input class="form-check-input" type="checkbox" id="menu2" name="menu2" value="13" onclick="calculatePrice()">Sotong Gorilla</td>
                     <td>Ala Carte</td>
-                    <td><input  type="text" value="0" onChange="calculatePrice();calculateQty()" name="q2" id="q2"></td>  
-                    <td><input readonly value="0" name="p2"  id="p2"></td>  
+                    <td><input  type="text" value="0" onChange="calculatePrice();calculateQty()" id="q2"></td>  
+                    <td><input readonly value="0"  id="p2" disabled></td>  
                     </tr> 
                     <tr>
-                    <td><input type="checkbox" id="menu3" name="menu3" value="4" onclick="calculatePrice()">Sosej Cheese</td>
-                    <input type="hidden" name="m3" value="3" id="cat2" />
+                    <td><input class="form-check-input" type="checkbox" id="menu3" name="menu3" value="4" onclick="calculatePrice()">Sosej Cheese</td>
                     <td>Ala Carte</td>
-                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q3" id="q3"></td>
-                    <td><input readonly value="0"" name="p3" id="p3"></td> 
+                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q3"></td>
+                    <td><input readonly value="0"" id="p3" disabled></td> 
                     </tr> 
                     <tr>
-                    <td><input type="checkbox" id="menu4" name="menu4" value="1" onclick="calculatePrice()">Add-On Chezzy</td>
-                    <input type="hidden" name="m4" value="4" id="cat2" />
+                    <td><input class="form-check-input" type="checkbox" id="menu4" name="menu4" value="1" onclick="calculatePrice()">Add-On Chezzy</td>
                     <td>Add-On</td>
-                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q4" id="q4"></td>
-                    <td><input readonly value="0" name="p4"  id="p4"></td> 
+                    <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q4"></td>
+                    <td><input readonly value="0"  id="p4" disabled></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu5" name="menu5" value="12" onclick="calculatePrice()">Ayam Gunting + Sosej Cheese</td>
-                        <input type="hidden" name="m5" value="5" id="cat2" />
+                        <td style="width:25%"><input class="form-check-input" type="checkbox" id="menu5" name="menu5" value="12" onclick="calculatePrice()">Ayam Gunting + Sosej Cheese</td>
                         <td>Combo Set</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q5" id="q5"></td>
-                        <td><input readonly value="0" name="p5" id="p5"></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q5"></td>
+                        <td><input readonly value="0"  id="p5" disabled></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu6" name="menu6" value="16" onclick="calculatePrice()">Sotong Gorilla + Sosej Cheese</td>
-                        <input type="hidden" name="m6" value="6" id="cat2" />
+                        <td><input class="form-check-input" type="checkbox" id="menu6" name="menu6" value="16" onclick="calculatePrice()">Sotong Gorilla + Sosej Cheese</td>
                         <td>Combo Set</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q6" id="q6"></td>
-                        <td><input readonly value="0" name="p6" id="p6"></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q6"></td>
+                        <td><input readonly value="0" id="p6" disabled></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu7" name="menu7" value="7" onclick="calculatePrice()">Sosej Cheese (2 pcs)</td>
-                        <input type="hidden" name="m7" value="7" id="cat2" />
+                        <td><input class="form-check-input" type="checkbox" id="menu7" name="menu7" value="7" onclick="calculatePrice()">Sosej Cheese (2 pcs)</td>
                         <td>Combo Set</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q7" id="q7"></td>
-                        <td><input readonly value="0" name="p7" id="p7"></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q7"></td>
+                        <td><input readonly value="0"  id="p7" disabled></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu8" name="menu8" value="10" onclick="calculatePrice()">Ayam Gunting + Air</td>
-                        <input type="hidden" name="m8" value="8" id="cat2" />
+                        <td><input class="form-check-input" type="checkbox" id="menu8" name="menu8" value="10" onclick="calculatePrice()">Ayam Gunting + Air</td>
                         <td>Rasta Combo</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q8" id="q8"></td>
-                        <td><input readonly value="0" name="p8" id="p8"></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q8"></td>
+                        <td><input readonly value="0"  id="p8" disabled></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu9" name="menu9" value="14" onclick="calculatePrice()">Sotong Gorilla + Air</td>
-                        <input type="hidden" name="m9" value="9" id="cat2" />
+                        <td><input class="form-check-input" type="checkbox" id="menu9" name="menu9" value="14" onclick="calculatePrice()">Sotong Gorilla + Air</td>
                         <td>Rasta Combo</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q9" id="q9"></td>
-                        <td><input readonly value="0" name="p9" id="p9"></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q9"></td>
+                        <td><input readonly value="0"  id="p9" disabled></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu10" name="menu10" value="5" onclick="calculatePrice()">Sosej Cheese + Air</td>
-                        <input type="hidden" name="m10" value="10" id="cat2" />
+                        <td><input class="form-check-input" type="checkbox" id="menu10" name="menu10" value="5" onclick="calculatePrice()">Sosej Cheese + Air</td>
                         <td>Rasta Combo</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q10" id="q10"></td>
-                        <td><input readonly value="0" name="p10" id="p10"></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q10"></td>
+                        <td><input readonly value="0"  id="p10" disabled></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu11" name="menu11" value="2" onclick="calculatePrice()">Teh O Ais</td>
-                        <input type="hidden" name="m11" value="11" id="cat2" />
+                        <td><input class="form-check-input" type="checkbox" id="menu11" name="menu11" value="2" onclick="calculatePrice()">Teh O Ais</td>
                         <td>Minuman</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q11" id="q11"></td>
-                        <td><input readonly value="0" name="p11" id="p11"></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q11"></td>
+                        <td><input readonly value="0"  id="p11" disabled></td> 
                     </tr>
                     <tr>
-                        <td><input type="checkbox" id="menu12" name="menu12" value="2" onclick="calculatePrice()">Sirap</td>
-                        <input type="hidden" name="m12" value="12" id="cat2" />
+                        <td><input class="form-check-input" type="checkbox" id="menu12" name="menu12" value="2" onclick="calculatePrice()">Sirap</td>
                         <td>Minuman</td>
-                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" name="q12" id="q12"></td>
-                        <td><input readonly value="0" name="p12" id="p12"></td> 
+                        <td><input type="text" value="0" onChange="calculatePrice();calculateQty()" id="q12"></td>
+                        <td><input readonly value="0"  id="p12" disabled></td> 
                     </tr>
                     <tr>
                     <td></td> 
                     <td>Total</td>
-                    <td><input type="number" name="quantityall" readonly value="0" id="qtyAll"/></td>
-                    <td><input type="number" name="totalall" readonly value="0" id="totAll"/></td>
+                    <td><input type="number" name="quantityall" readonly value="0" id="qtyAll" disabled/></td>
+                    <td><input type="number" name="totalall" readonly value="0" id="totAll" disabled/></td>
                     </table>
-                    <div class="center"><h1>Notes</h1></div>
-                    <div class ="notesbox">
-                    <textarea name="notes" id="notes" style="width:50%;height:90px;background-color:green;border:none;padding:2%;font:22px/30px sans-serif;">
-                    </textarea>
-                    </div text>
-                    <br>
-                    <div class="buttonContainer">
+                    <div class="container text-center">
+                            <h1>Notes</h1>
+                        </div>
+                        <div class="container note-box">
+                            <!--Dont put anything or take closing for textarea to new line-->
+                            <textarea name="notes" id="notes" class="form-control" rows="3"></textarea>
+                        </div text>
+                        <br>
+                    <div class="container text-center">
                         <input type="reset" class="button" id="buttonClear" value="Clear">
-                        <input type="submit" name="submit" class="button" id="buttonSubmit" value="Submit Order" onclick=createBill()>
+                        <input type="submit" class="button" id="buttonSubmit" value="Submit Order" onclick=createBill()>
                     </div>
                     </form>
             </div>
       </container>
     </main>
-      <footer>
-        <div class="footer-nav">
-          <a href="index.php" class="footer-nav-link">Home</a>
-          <a href="index.php" class="footer-nav-link">Menu</a>
-          <a href="index.php" class="footer-nav-link">About Us</a>
-          <a href="index.php" class="footer-nav-link">Contact</a>
-        </div>
-        <div class="footer-social">
-          <a href="https://www.instagram.com/dummy" target="_blank">
-            <i class="fab fa-instagram" aria-hidden="true"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/dummy" target="_blank">
-            <i class="fab fa-linkedin" aria-hidden="true"></i>
-          </a>
-          <a href="https://www.youtube.com/channel/dummy" target="_blank">
-            <i class="fab fa-youtube" aria-hidden="true"></i>
-          </a>
-        </div>
-      </footer>
       <script>
-        function calculateQty(tblform){
+        function calculateQty(tblform) {
             var q1 = parseInt(document.getElementById("q1").value);
             var q2 = parseInt(document.getElementById("q2").value);
             var q3 = parseInt(document.getElementById("q3").value);
@@ -419,9 +196,10 @@ footer a{
             var q11 = parseInt(document.getElementById("q11").value);
             var q12 = parseInt(document.getElementById("q12").value);
             var qtyall = 0;
-            qtyall = q1+q2+q3+q4+q5+q6+q7+q8+q9+q10+q11+q12;
-            document.getElementById("qtyAll").value=qtyall;
+            qtyall = q1 + q2 + q3 + q4 + q5 + q6 + q7 + q8 + q9 + q10 + q11 + q12;
+            document.getElementById("qtyAll").value = qtyall;
         }
+
         function calculatePrice(tblform){ 
             var m1 = document.getElementById("menu1");
             var m2 = document.getElementById("menu2");
