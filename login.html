@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin sign in</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="main.css"/>
+</head>	
+<body background="images/AyamGunting.png">
+	<div class="container">
+		<div class="nav">
+			<a href="index.php"></a>
+			<div class="nav-logo">
+				<a href="index.html">
+				<img src="images/topleftpic.png">
+				</a>
+			</div>
+		</div>
+		<div class="center">
+			<h1>Administrator</h1>
+			<h1>Sign in</h1><br>
+		<form action="checkLogin.php" method="POST">
+			<input type="text" name="uusername" placeholder="Username"><br>
+			<input type="password" name="upassword" placeholder="Password"><br><br>
+			<button name="login_btn" href="test.php" type="submit" class="btn"><b>Sign in</b></button>
+		</form>
+	</div>
