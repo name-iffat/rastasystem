@@ -64,6 +64,7 @@ include('connection.php');
                 <td> <?php echo $row['EMPLOYEE_ID']; ?> </td>
                 <td> <?php echo $row['LAST_NAME']; ?> </td>
                 <td> <?php echo $row['PHONE']; ?> </td>
+
             </tr>
         <?php
         } ?>
@@ -77,7 +78,9 @@ include('connection.php');
     $row = oci_fetch_array($result1, OCI_ASSOC);
     $count = oci_num_rows($result1);
     ?>
+
     <p class="text-center"> TOTAL ORDERS : <?php echo $row['COUNT(ORDER_ID)'] ?></p>
+
     </div>
     </div>
 </body>

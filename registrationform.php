@@ -51,6 +51,7 @@
                             <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                             <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
                             <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
+
                             <li class="nav-item"><a class="nav-link" href="adminlogin.php" onClick="return logout()">Logout</a>
                             </li>
                         </ul>
@@ -58,7 +59,9 @@
                 </div>
             </nav>
         <div class="container table-bg d-flex flex-column align-items-center rounded-4">
+
             <input type="button" class="button" onclick="location.href='adminhome.php';" value="Back">
+
             <form action="registrationform.php" method="POST" autocomplete="off">
                 <div class="row">
                     <div class="column2 mt-3">
@@ -122,7 +125,9 @@
                             <option>100</option>
                         </select>
                     </div>
+
                     <div class="column mt-3 text-center">
+
                         <button class=" button buttonsubmit" name="submit" type="submit" value="s">
                             SUBMIT
                         </button>

@@ -42,6 +42,7 @@ session_start();
                         <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
                         <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
+
                         <li class="nav-item"><a class="nav-link" href="adminlogin.php" onClick="return logout()">Logout</a>
                         </li>
                     </ul>
@@ -53,6 +54,7 @@ session_start();
                 <h1> Welcome, <?php echo $_SESSION['lname']; ?> !</h1>
             </div>
             <a href="paymentstatus.php">
+            
                 <button class="btn-1 mb-2">Payment Status</button>
             </a>
             <a href="order.php">

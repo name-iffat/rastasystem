@@ -281,7 +281,9 @@ border: 1px solid #6a040f;
 }
 
 .table-bg1 {
+
   margin-top: 50px;
+
   background-color: white;
   background-image: none;
   border: 1px solid rgba(0, 0, 0, 0.3);
@@ -292,6 +294,7 @@ border: 1px solid #6a040f;
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
   width: 50%;
 }
+
 
 .table-bg2 {
   background-color: white;
@@ -305,6 +308,7 @@ border: 1px solid #6a040f;
   width: 100%;
   margin-top: 160px;
 }
+
 
 .masthead1 {
     position: relative;
@@ -514,6 +518,7 @@ border: 1px solid #6a040f;
 .btn-1:focus-visible {
   box-shadow: none;
 }
+
 
 /* -------------------------------------
     INVOICE

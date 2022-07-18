@@ -11,7 +11,9 @@ include('connection.php');
 </head>
 
 <body class="section-admin">
+
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+
                     <div class="container px-4 px-lg-5">
                         <a class="navbar-brand" href="adminhome.php"><img class="img-fluid" src="./images/Logo2.png"></a>
                         <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,6 +26,8 @@ include('connection.php');
                                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                                 <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
                                 <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
+
+
                                 <li class="nav-item"><a class="nav-link" href="adminlogin.php" onClick="return logout()">Logout</a>
                                 </li>
                             </ul>
@@ -32,6 +36,7 @@ include('connection.php');
                 </nav>
                 
                 <div class="container table-bg2 d-flex flex-column align-items-center rounded-4">
+
     <?php
     $id=['paymentid'];
     $result = oci_parse($connection, "SELECT P.ORDER_ID, P.PAYMENT_ID, O.ORDER_DATE, TOTAL, O.EMPLOYEE_ID, E.LAST_NAME, E.PHONE, PAYMENT_STATUS
@@ -48,7 +53,9 @@ include('connection.php');
             return confirm("Do you want to delete data?\nclick OK to proceed");
         }
     </script>
+
     <input type="button" class="button" onclick="location.href='adminhome.php';" value="Back">
+
     <table class="table table-responsive">
         <tr>
             <th>ORDER ID</th>
