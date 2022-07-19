@@ -3,6 +3,11 @@
 ?>
 <html>
     <head>
+    <script>
+        function logout() {
+            return confirm("Log Out?");
+        }
+    </script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
         <link href="./style.css" rel="stylesheet">
     </head>
@@ -21,7 +26,6 @@
                                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                                 <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
                                 <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link" href="adminlogin.php" onClick="return logout()">Logout</a>
                                 </li>
                             </ul>
@@ -29,6 +33,9 @@
                     </div>
                 </nav>
         <div class="container table-bg align-items-center rounded-4">
+        <div class="buttonContainer text-center">
+            <input type="button" class="button mt-3" onclick="location.href='adminhome.php';" value="Back">
+                    </div>
     <?php
         $result = oci_parse($connection,"SELECT O.ORDER_ID, SUM(OD.QUANTITY) , SUM(OD.SUBTOTAL), O.NOTES, O.ORDER_DATE, O.EMPLOYEE_ID, E.LAST_NAME
         FROM ORDER_DETAILS OD JOIN ORDERS O
@@ -69,7 +76,10 @@
         $row = oci_fetch_array($result1, OCI_ASSOC);  
         $count = oci_num_rows($result1); 
         ?>
-        <p> TOTAL ORDERS : <?php echo $row['COUNT(ORDER_ID)'] ?></p>
+        <p class="text-center"> TOTAL ORDERS : <?php echo $row['COUNT(ORDER_ID)'] ?></p>
+        <div class="buttonContainer text-center">
+            <input type="button" class="button mt-3" onclick="location.href='adminhome.php';" value="Back">
+                    </div>
     </div>
     </div>
     </body>

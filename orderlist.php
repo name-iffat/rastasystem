@@ -4,6 +4,11 @@ include('connection.php');
 <html>
 
 <head>
+<script>
+        function logout() {
+            return confirm("Log Out?");
+        }
+    </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link href="./style.css" rel="stylesheet">
 </head>
@@ -23,7 +28,6 @@ include('connection.php');
                                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                                 <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
                                 <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link" href="adminlogin.php" onClick="return logout()">Logout</a>
                                 </li>
                             </ul>
@@ -43,7 +47,9 @@ include('connection.php');
         }
     </script>
     <div class="container table-bg align-items-center rounded-4">
-    <input type="button" class="button mb-3" onclick="location.href='adminhome.php';" value="Back">
+    <div class="buttonContainer text-center">
+            <input type="button" class="button mt-3" onclick="location.href='adminhome.php';" value="Back">
+                    </div>
     <table class="container table">
         <tr>
             <th>ORDER ID</th>
@@ -53,7 +59,6 @@ include('connection.php');
             <th>EMPLOYEE ID</th>
             <th>LAST NAME</th>
             <th>PHONE NUMBER</th>
-            <th align="center" colspan="2">ACTION</th>
         </tr>
         <?php
         while ($row = oci_fetch_array($result)) {
@@ -66,7 +71,6 @@ include('connection.php');
                 <td> <?php echo $row['EMPLOYEE_ID']; ?> </td>
                 <td> <?php echo $row['LAST_NAME']; ?> </td>
                 <td> <?php echo $row['PHONE']; ?> </td>
-                <td width="10%" align="center"><a class="one" onclick="return del()" href="delete_order.php?ORDER_ID=<?php echo $row['ORDER_ID']; ?>">Delete</a></td>
             </tr>
         <?php
         } ?>
@@ -80,7 +84,10 @@ include('connection.php');
     $row = oci_fetch_array($result1, OCI_ASSOC);
     $count = oci_num_rows($result1);
     ?>
-    <p> TOTAL ORDERS : <?php echo $row['COUNT(ORDER_ID)'] ?></p>
+    <p class="text-center"> TOTAL ORDERS : <?php echo $row['COUNT(ORDER_ID)'] ?></p>
+    <div class="buttonContainer text-center">
+            <input type="button" class="button mt-3" onclick="location.href='adminhome.php';" value="Back">
+                    </div>
     </div>
     </div>
 </body>

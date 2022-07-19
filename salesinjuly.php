@@ -3,6 +3,11 @@
 ?>
 <html>
     <head>
+    <script>
+        function logout() {
+            return confirm("Log Out?");
+        }
+    </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link href="./style.css" rel="stylesheet">
     </head>
@@ -21,7 +26,6 @@
                             <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                             <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
                             <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
                             <li class="nav-item"><a class="nav-link" href="adminlogin.php" onClick="return logout()">Logout</a>
                             </li>
                         </ul>
@@ -29,6 +33,7 @@
                 </div>
             </nav>
         <div class="container table-bg d-flex flex-column align-items-center rounded-4">
+        <input type="button" class="button mb-3" onclick="location.href='adminhome.php';" value="Back">
     <?php
         $result = oci_parse($connection,"SELECT O.EMPLOYEE_ID, E.LAST_NAME, E.PHONE, COUNT(ORDER_ID), SUM(TOTAL)
         FROM ORDERS O JOIN EMPLOYEE E
